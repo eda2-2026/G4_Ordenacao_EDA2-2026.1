@@ -23,18 +23,18 @@ public class PacienteService {
         return paciente;
     }
 
-    public static Paciente cadastrarPaciente(String cpf, String nome, char sexo, LocalDate dataNascimento, List<Condicao> condicoes) {
+    public static Paciente cadastrarPaciente(String cpf, String nome, char sexo, LocalDate dataNascimento, List<Condicao> historicoCondicoes) {
         // Cadastro completo
         int idade = calcularIdade(dataNascimento);
-        Paciente paciente = new Paciente("", nome, idade, sexo, dataNascimento, -1, condicoes, true);
+        Paciente paciente = new Paciente("", nome, idade, sexo, dataNascimento, -1, historicoCondicoes, true);
         inserirOrdenado(paciente);
         return paciente;
     }
 
-    public static void adicionarPacienteFila(Paciente paciente, List<Condicao> condicoes, int gravidade) {
+    public static void adicionarPacienteFila(Paciente paciente, List<Condicao> condicoesAtuais, int gravidade) {
         paciente.setId(++contadorId);
         paciente.setChegada(LocalDateTime.now());
-        paciente.adicionarCondicoes(condicoes);
+        paciente.setCondicoesAtuais(condicoesAtuais);
         paciente.setGravidade(gravidade);
         pacientesFila.add(paciente); // TODO: Implementar MaxHeap
     }
