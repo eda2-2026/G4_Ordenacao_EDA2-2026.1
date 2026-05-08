@@ -64,7 +64,7 @@ public class MaxHeap {
             throw new RuntimeException("A fila está vazia!");
         }
         int ultimo = lista.size() - 1;
-        Paciente removido = lista.get(0);
+        Paciente removido = lista.getFirst();
         swap(0, ultimo, lista);
         lista.remove(ultimo);
         shiftDown(0, lista);

@@ -26,6 +26,7 @@ public class PacienteService {
         int idade = calcularIdade(dataNascimento);
         Paciente paciente = new Paciente(cpf, nome, idade, sexo, dataNascimento, historicoCondicoes);
         inserirOrdenado(paciente);
+        PersistenciaService.salvar(pacientesCadastrados);
         return paciente;
     }
 
@@ -38,8 +39,13 @@ public class PacienteService {
         MaxHeap.inserirPacienteFilaPrioridade(paciente, pacientesFila);
     }
 
+    public static void recuperarPacientesCadastrados() {
+        pacientesCadastrados = PersistenciaService.carregar();
+        ordenar();
+    }
+
     private static void inserirOrdenado(Paciente paciente) {
-        // Insertion sort
+        // Insertion sort incremental
         pacientesCadastrados.add(paciente);
         int i = pacientesCadastrados.size() - 1;
 
@@ -56,6 +62,20 @@ public class PacienteService {
         }
     }
 
+    private static void ordenar() {
+        // Insertion sort
+        int n = pacientesCadastrados.size();
+        for (int i = 1; i < n; i++) {
+            Paciente atual = pacientesCadastrados.get(i);
+            int j = i - 1;
+            while (j >= 0 && pacientesCadastrados.get(j).getCpf().compareTo(atual.getCpf()) > 0) {
+                pacientesCadastrados.set(j + 1, pacientesCadastrados.get(j));
+                j--;
+            }
+            pacientesCadastrados.set(j + 1, atual);
+        }
+    }
+
     public static List<Paciente> listarPacientesFila() {
         return new ArrayList<>(pacientesFila);
     }
@@ -66,4 +86,5 @@ public class PacienteService {
     private static int calcularIdade(LocalDate dataNascimento) {
         return Period.between(dataNascimento, LocalDate.now()).getYears();
     }
+
 }
