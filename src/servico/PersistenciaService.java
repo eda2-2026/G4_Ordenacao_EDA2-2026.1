@@ -79,7 +79,7 @@ public class PersistenciaService {
             List<Condicao> condicoes = stringParaCondicoes(campos.length > 5 ? campos[4] : "");
 
             int idade = dataNasc.getYear() - dataNasc.getMonthValue();
-            return new Paciente(cpf, nome, idade, sexo, dataNasc, condicoes);
+            return new Paciente(cpf, nome, sexo, dataNasc, condicoes);
 
         } catch (Exception e) {
             System.err.println("Linha inválida ignorada: " + linha);

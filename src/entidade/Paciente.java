@@ -1,4 +1,6 @@
 package entidade;
+import util.DataUtil;
+
 import java.time.LocalDateTime;
 import java.time.LocalDate;
 import java.util.List;
@@ -19,13 +21,12 @@ public class Paciente {
     private LocalDateTime chegada;
     private List<Condicao> condicoesAtuais;
 
-    public Paciente(String cpf, String nome, int idade, char sexo, LocalDate dataNascimento, List<Condicao> historicoCondicoes) {
+    public Paciente(String cpf, String nome, char sexo, LocalDate dataNascimento, List<Condicao> historicoCondicoes) {
         // Paciente com cadastro
         this.cpf = cpf;
         this.nome = nome;
         this.sexo = sexo;
         this.dataNascimento = dataNascimento;
-        this.idade = idade;
         this.historicoCondicoes = historicoCondicoes;
         this.temCadastro = true;
     }
@@ -96,6 +97,8 @@ public class Paciente {
     }
 
     public int getIdade() {
+        if (temCadastro)
+            return DataUtil.calcularIdade(this.dataNascimento);
         return idade;
     }
 

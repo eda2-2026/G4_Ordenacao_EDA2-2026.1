@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PacienteService {
-    private static List<Paciente> pacientesFila = new ArrayList<>(),
-                                  pacientesCadastrados = new ArrayList<>();
+    private static final List<Paciente> pacientesFila = new ArrayList<>();
+    private static List<Paciente> pacientesCadastrados = new ArrayList<>();
     private static int contadorId = 0;
 
     private PacienteService() {}
@@ -23,8 +23,7 @@ public class PacienteService {
     }
 
     public static Paciente cadastrarPaciente(String cpf, String nome, char sexo, LocalDate dataNascimento, List<Condicao> historicoCondicoes) {
-        int idade = calcularIdade(dataNascimento);
-        Paciente paciente = new Paciente(cpf, nome, idade, sexo, dataNascimento, historicoCondicoes);
+        Paciente paciente = new Paciente(cpf, nome, sexo, dataNascimento, historicoCondicoes);
         inserirOrdenado(paciente);
         PersistenciaService.salvar(pacientesCadastrados);
         return paciente;
@@ -37,6 +36,14 @@ public class PacienteService {
         paciente.setCondicoesAtuais(condicoesAtuais);
         paciente.setScorePrioridade(scorePrioridade);
         MaxHeap.inserirPacienteFilaPrioridade(paciente, pacientesFila);
+    }
+
+    public static Paciente lerProximoFila() {
+        return pacientesFila.getFirst();
+    }
+
+    public static Paciente removerProximoFila() {
+        return MaxHeap.removerPacienteFilaPrioridade(pacientesFila);
     }
 
     public static void recuperarPacientesCadastrados() {
@@ -82,9 +89,6 @@ public class PacienteService {
 
     public static List<Paciente> listarPacientesCadastrados() {
         return new ArrayList<>(pacientesCadastrados);
-    }
-    private static int calcularIdade(LocalDate dataNascimento) {
-        return Period.between(dataNascimento, LocalDate.now()).getYears();
     }
 
 }
