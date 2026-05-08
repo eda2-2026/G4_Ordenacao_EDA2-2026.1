@@ -2,6 +2,7 @@ package servico;
 
 import entidade.Condicao;
 import entidade.Paciente;
+import estrutura.MaxHeap;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -34,7 +35,7 @@ public class PacienteService {
         paciente.setChegada(LocalDateTime.now());
         paciente.setCondicoesAtuais(condicoesAtuais);
         paciente.setScorePrioridade(scorePrioridade);
-        pacientesFila.add(paciente); // TODO: Implementar MaxHeap
+        MaxHeap.inserirPacienteFilaPrioridade(paciente, pacientesFila);
     }
 
     private static void inserirOrdenado(Paciente paciente) {
