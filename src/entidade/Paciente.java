@@ -15,18 +15,18 @@ public class Paciente {
 
     // Dados da visita atual
     private int id;
-    private int gravidade;
+    private int scorePrioridade;
     private LocalDateTime chegada;
     private List<Condicao> condicoesAtuais;
 
     // No banco de dados
-    public Paciente(String cpf, String nome, int idade, char sexo, LocalDate dataNascimento, int gravidade, List<Condicao> historicoCondicoes, boolean temCadastroCompleto) {
+    public Paciente(String cpf, String nome, int idade, char sexo, LocalDate dataNascimento, int scorePrioridade, List<Condicao> historicoCondicoes, boolean temCadastroCompleto) {
         this.cpf = cpf;
         this.nome = nome;
         this.sexo = sexo;
         this.dataNascimento = dataNascimento;
         this.idade = idade;
-        this.gravidade = gravidade;
+        this.scorePrioridade = scorePrioridade;
         this.historicoCondicoes = historicoCondicoes;
         this.temCadastroCompleto = temCadastroCompleto;
     }
@@ -39,8 +39,8 @@ public class Paciente {
         this.id = id;
     }
 
-    public void setGravidade(int gravidade) {
-        this.gravidade = gravidade;
+    public void setScorePrioridade(int scorePrioridade) {
+        this.scorePrioridade = scorePrioridade;
     }
 
     public void setChegada(LocalDateTime chegada) {

@@ -31,11 +31,11 @@ public class PacienteService {
         return paciente;
     }
 
-    public static void adicionarPacienteFila(Paciente paciente, List<Condicao> condicoesAtuais, int gravidade) {
+    public static void adicionarPacienteFila(Paciente paciente, List<Condicao> condicoesAtuais, int scorePrioridade) {
         paciente.setId(++contadorId);
         paciente.setChegada(LocalDateTime.now());
         paciente.setCondicoesAtuais(condicoesAtuais);
-        paciente.setGravidade(gravidade);
+        paciente.setScorePrioridade(scorePrioridade);
         pacientesFila.add(paciente); // TODO: Implementar MaxHeap
     }
 
