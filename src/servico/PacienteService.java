@@ -11,6 +11,7 @@ import java.util.List;
 
 public class PacienteService {
     private static final List<Paciente> pacientesFila = new ArrayList<>();
+    private static final List<Paciente> pacientesAtendidos = new ArrayList<>();
     private static List<Paciente> pacientesCadastrados = new ArrayList<>();
     private static int contadorId = 0;
 
@@ -21,11 +22,16 @@ public class PacienteService {
         return new Paciente(id, nome, idade, sexo);
     }
 
-    public static Paciente cadastrarPaciente(String cpf, String nome, char sexo, LocalDate dataNascimento, List<Condicao> historicoCondicoes) {
+    public static void cadastrarPaciente(String cpf, String nome, char sexo, LocalDate dataNascimento, List<Condicao> historicoCondicoes) {
         Paciente paciente = new Paciente(cpf, nome, sexo, dataNascimento, historicoCondicoes);
         inserirOrdenado(paciente);
         PersistenciaService.salvar(pacientesCadastrados);
-        return paciente;
+    }
+
+    public static void cadastrarPaciente(Paciente paciente) {
+        paciente.setTemCadastro(true);
+        inserirOrdenado(paciente);
+        PersistenciaService.salvar(pacientesCadastrados);
     }
 
     public static void adicionarPacienteFila(Paciente paciente, List<Condicao> condicoesAtuais, int scorePrioridade) {
@@ -37,12 +43,35 @@ public class PacienteService {
         MaxHeap.inserirPacienteFilaPrioridade(paciente, pacientesFila);
     }
 
+    public static Paciente atenderProximoFila() {
+        Paciente paciente = MaxHeap.removerPacienteFilaPrioridade(pacientesFila);
+        if (paciente != null)
+            pacientesAtendidos.add(paciente);
+        return paciente;
+    }
+
     public static Paciente lerProximoFila() {
         return pacientesFila.getFirst();
     }
 
-    public static Paciente removerProximoFila() {
-        return MaxHeap.removerPacienteFilaPrioridade(pacientesFila);
+    public static void atualizarPaciente(Paciente paciente, String cpf, String nome, char sexo, LocalDate dataNascimento, List<Condicao> historicoCondicoes) {
+        boolean cpfMudou = !paciente.getCpf().equals(cpf);
+
+        paciente.setCpf(cpf);
+        paciente.setNome(nome);
+        paciente.setSexo(sexo);
+        paciente.setDataNascimento(dataNascimento);
+        paciente.setHistoricoCondicoes(historicoCondicoes);
+
+        if (paciente.temCadastro()) {
+            if (cpfMudou)
+                ordenar();
+            PersistenciaService.salvar(pacientesCadastrados);
+            return;
+        }
+
+        paciente.setIdade(0);
+        cadastrarPaciente(paciente);
     }
 
     public static void recuperarPacientesCadastrados() {
@@ -103,7 +132,12 @@ public class PacienteService {
         return null;
     }
 
+    public static List<Paciente> listarPacientesAtendidos() {
+        return new ArrayList<>(pacientesAtendidos);
+    }
+
     public static List<Paciente> listarPacientesFila() {
+        // Não está ordenada. Apenas o primeiro elemento está na posição correta.
         return new ArrayList<>(pacientesFila);
     }
 
