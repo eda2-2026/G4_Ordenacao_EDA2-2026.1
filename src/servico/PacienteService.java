@@ -16,23 +16,21 @@ public class PacienteService {
 
     private PacienteService() {}
 
-    public static Paciente cadastrarPaciente(String nome, int idade, char sexo) {
-        // Cadastro rápido
-        Paciente paciente = new Paciente("", nome, idade, sexo, null, -1, new ArrayList<>(), false);
-        inserirOrdenado(paciente);
-        return paciente;
+    public static Paciente criarPacienteTemporario(String nome, int idade, char sexo) {
+        int id = ++contadorId;
+        return new Paciente(id, nome, idade, sexo);
     }
 
     public static Paciente cadastrarPaciente(String cpf, String nome, char sexo, LocalDate dataNascimento, List<Condicao> historicoCondicoes) {
-        // Cadastro completo
         int idade = calcularIdade(dataNascimento);
-        Paciente paciente = new Paciente("", nome, idade, sexo, dataNascimento, -1, historicoCondicoes, true);
+        Paciente paciente = new Paciente(cpf, nome, idade, sexo, dataNascimento, historicoCondicoes);
         inserirOrdenado(paciente);
         return paciente;
     }
 
     public static void adicionarPacienteFila(Paciente paciente, List<Condicao> condicoesAtuais, int scorePrioridade) {
-        paciente.setId(++contadorId);
+        if (paciente.getId() == 0)
+            paciente.setId(++contadorId);
         paciente.setChegada(LocalDateTime.now());
         paciente.setCondicoesAtuais(condicoesAtuais);
         paciente.setScorePrioridade(scorePrioridade);

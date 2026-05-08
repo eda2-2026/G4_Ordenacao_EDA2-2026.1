@@ -9,7 +9,7 @@ public class Paciente {
                    cpf;
     private char sexo;
     private int idade;
-    private boolean temCadastroCompleto;
+    private boolean temCadastro;
     private LocalDate dataNascimento;
     private List<Condicao> historicoCondicoes;
 
@@ -19,16 +19,24 @@ public class Paciente {
     private LocalDateTime chegada;
     private List<Condicao> condicoesAtuais;
 
-    // No banco de dados
-    public Paciente(String cpf, String nome, int idade, char sexo, LocalDate dataNascimento, int scorePrioridade, List<Condicao> historicoCondicoes, boolean temCadastroCompleto) {
+    public Paciente(String cpf, String nome, int idade, char sexo, LocalDate dataNascimento, List<Condicao> historicoCondicoes) {
+        // Paciente com cadastro
         this.cpf = cpf;
         this.nome = nome;
         this.sexo = sexo;
         this.dataNascimento = dataNascimento;
         this.idade = idade;
-        this.scorePrioridade = scorePrioridade;
         this.historicoCondicoes = historicoCondicoes;
-        this.temCadastroCompleto = temCadastroCompleto;
+        this.temCadastro = true;
+    }
+
+    public Paciente(int id, String nome, int idade, char sexo) {
+        // Paciente temporário
+        this.id = id;
+        this.nome = nome;
+        this.sexo = sexo;
+        this.idade = idade;
+        this.temCadastro = false;
     }
 
     public String getCpf() {
@@ -37,6 +45,10 @@ public class Paciente {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public void setScorePrioridade(int scorePrioridade) {
