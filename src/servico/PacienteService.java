@@ -6,7 +6,6 @@ import estrutura.MaxHeap;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,6 +80,27 @@ public class PacienteService {
             }
             pacientesCadastrados.set(j + 1, atual);
         }
+    }
+
+    public static Paciente buscarCliente(String cpf) {
+        // Busca binária
+        int inicio = 0;
+        int fim = pacientesCadastrados.size() - 1;
+
+        while (inicio <= fim) {
+            int meio = (inicio + fim) / 2;
+            String cpfMeio = pacientesCadastrados.get(meio).getCpf();
+            int comparacao = cpfMeio.compareTo(cpf);
+
+            if (comparacao == 0)
+                return pacientesCadastrados.get(meio);
+            else if (comparacao < 0)
+                inicio = meio + 1;
+            else
+                fim = meio - 1;
+        }
+
+        return null;
     }
 
     public static List<Paciente> listarPacientesFila() {
