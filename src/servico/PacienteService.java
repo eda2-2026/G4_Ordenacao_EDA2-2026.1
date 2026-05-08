@@ -41,16 +41,17 @@ public class PacienteService {
         // Insertion sort
         pacientesCadastrados.add(paciente);
         int i = pacientesCadastrados.size() - 1;
+
         while (i > 0) {
             Paciente atual = pacientesCadastrados.get(i);
             Paciente anterior = pacientesCadastrados.get(i - 1);
+
             if (atual.getCpf().compareTo(anterior.getCpf()) < 0) {
                 pacientesCadastrados.set(i, anterior);
                 pacientesCadastrados.set(i - 1, atual);
                 i--;
-            } else {
-                break;
-            }
+
+            } else break;
         }
     }
 
