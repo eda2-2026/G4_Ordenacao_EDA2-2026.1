@@ -55,11 +55,11 @@ public class PacienteService {
     }
 
     public static List<Paciente> listarPacientesFila() {
-        return pacientesFila;
+        return new ArrayList<>(pacientesFila);
     }
 
     public static List<Paciente> listarPacientesCadastrados() {
-        return pacientesCadastrados;
+        return new ArrayList<>(pacientesCadastrados);
     }
     private static int calcularIdade(LocalDate dataNascimento) {
         return Period.between(dataNascimento, LocalDate.now()).getYears();
