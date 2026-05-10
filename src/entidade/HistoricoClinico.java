@@ -3,7 +3,7 @@ package entidade;
 /**
  * ========================================================================
  * HISTÓRICO CLÍNICO
- * Doenças e antecedentes médicos do paciente.
+ * Doenças, antecedentes médicos e condições preexistentes do paciente.
  * Funcionam como agravantes na prioridade.
  * ========================================================================
  */
@@ -27,24 +27,15 @@ public enum HistoricoClinico {
 
     DIABETES("Diabetes", 4),
 
-    INSUFICIENCIA_RENAL(
-            "Insuficiência renal crônica",
-            4
-    ),
+    INSUFICIENCIA_RENAL("Insuficiência renal crônica", 4),
 
-    DOENCA_AUTOIMUNE(
-            "Doença autoimune",
-            3
-    ),
+    DOENCA_AUTOIMUNE("Doença autoimune", 3),
 
     // ====================================================================
     // DOENÇAS RESPIRATÓRIAS
     // ====================================================================
 
-    DOENCA_PULMONAR(
-            "DPOC, asma grave ou doença pulmonar",
-            5
-    ),
+    DOENCA_PULMONAR("DPOC, asma grave ou doença pulmonar", 5),
 
     // ====================================================================
     // CONDIÇÕES NEUROLÓGICAS
@@ -64,48 +55,41 @@ public enum HistoricoClinico {
     // ALERGIAS E COAGULAÇÃO
     // ====================================================================
 
-    ALERGIA_GRAVE(
-            "Histórico de anafilaxia",
-            5
-    ),
+    ALERGIA_GRAVE("Histórico de anafilaxia", 5),
 
-    DISTURBIO_COAGULACAO(
-            "Distúrbio de coagulação",
-            5
-    ),
+    DISTURBIO_COAGULACAO("Distúrbio de coagulação", 5),
 
     // ====================================================================
     // PSIQUIATRIA E DEPENDÊNCIA
     // ====================================================================
 
-    TRANSTORNO_PSIQUIATRICO(
-            "Transtorno psiquiátrico grave",
-            3
-    ),
+    TRANSTORNO_PSIQUIATRICO("Transtorno psiquiátrico grave", 3),
 
-    HISTORICO_SUICIDIO(
-            "Tentativa prévia de suicídio",
-            4
-    ),
+    HISTORICO_SUICIDIO("Tentativa prévia de suicídio", 4),
 
-    USO_DROGAS(
-            "Uso abusivo de álcool ou drogas",
-            3
-    ),
+    USO_DROGAS("Uso abusivo de álcool ou drogas", 3),
 
     // ====================================================================
     // EVENTOS RECENTES
     // ====================================================================
 
-    CIRURGIA_RECENTE(
-            "Cirurgia nos últimos 30 dias",
-            3
-    ),
+    CIRURGIA_RECENTE("Cirurgia nos últimos 30 dias", 3),
 
-    INTERNACAO_RECENTE(
-            "Internação recente",
-            3
-    );
+    INTERNACAO_RECENTE("Internação recente", 3),
+
+    // ====================================================================
+    // DEFICIÊNCIAS E CONDIÇÕES ESPECIAIS
+    // ====================================================================
+
+    AUTISMO("Autismo com dificuldade de comunicação", 3),
+
+    DEFICIENCIA_INTELECTUAL("Deficiência intelectual", 2),
+
+    DEFICIENCIA_FISICA("Mobilidade reduzida", 2),
+
+    DEFICIENCIA_VISUAL("Deficiência visual grave", 1),
+
+    DEFICIENCIA_AUDITIVA("Deficiência auditiva grave", 1);
 
     private final String descricao;
     private final int peso;
@@ -115,11 +99,6 @@ public enum HistoricoClinico {
         this.peso = peso;
     }
 
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public int getPeso() {
-        return peso;
-    }
+    public String getDescricao() { return descricao; }
+    public int getPeso()         { return peso; }
 }

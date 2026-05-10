@@ -1,6 +1,5 @@
 package servico;
 
-import entidade.FatorRisco;
 import entidade.HistoricoClinico;
 import entidade.Paciente;
 
@@ -82,29 +81,14 @@ public class PersistenciaService {
             char sexo                = campos[2].charAt(0);
             LocalDate dataNasc       = LocalDate.parse(campos[3]);
 
-            List<FatorRisco> fatores = stringParaFatores(campos.length > 4 ? campos[4] : "");
-            List<HistoricoClinico> historico = stringParaHistorico(campos.length > 5 ? campos[5] : "");
+            List<HistoricoClinico> historico = stringParaHistorico(campos.length > 5 ? campos[4] : "");
 
-            return new Paciente(cpf, nome, sexo, dataNasc, fatores, historico);
+            return new Paciente(cpf, nome, sexo, dataNasc, historico);
 
         } catch (Exception e) {
             System.err.println("Linha inválida ignorada: " + linha);
             return null;
         }
-    }
-
-    private static List<FatorRisco> stringParaFatores(String texto) {
-        List<FatorRisco> lista = new ArrayList<>();
-        if (texto.isEmpty()) return lista;
-
-        for (String nome : texto.split(SEPARADOR_LISTA)) {
-            try {
-                lista.add(FatorRisco.valueOf(nome));
-            } catch (IllegalArgumentException e) {
-                System.err.println("Condição inválida ignorada: " + nome);
-            }
-        }
-        return lista;
     }
 
     private static List<HistoricoClinico> stringParaHistorico(String texto) {

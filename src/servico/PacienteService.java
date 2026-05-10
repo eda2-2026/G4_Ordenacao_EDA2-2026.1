@@ -1,9 +1,8 @@
 package servico;
 
-import entidade.FatorRisco;
 import entidade.HistoricoClinico;
 import entidade.Paciente;
-import entidade.SintomaAgudo;
+import entidade.CondicaoAtual;
 import estrutura.MaxHeap;
 import estrutura.BuscaBinaria;
 import estrutura.InsertionSort;
@@ -27,8 +26,8 @@ public class PacienteService {
     }
 
     public static void cadastrarPaciente(String cpf, String nome, char sexo, LocalDate dataNascimento,
-                                         List<FatorRisco> fatoresRisco, List<HistoricoClinico> historicoClinico) {
-        Paciente paciente = new Paciente(cpf, nome, sexo, dataNascimento, fatoresRisco, historicoClinico);
+                                         List<HistoricoClinico> historicoClinico) {
+        Paciente paciente = new Paciente(cpf, nome, sexo, dataNascimento, historicoClinico);
         InsertionSort.inserirOrdenado(pacientesCadastrados, paciente);
         PersistenciaService.salvar(pacientesCadastrados);
     }
@@ -39,22 +38,20 @@ public class PacienteService {
         PersistenciaService.salvar(pacientesCadastrados);
     }
 
-    public static void adicionarPacienteFila(Paciente paciente, List<SintomaAgudo> sintomasAtuais) {
+    public static void adicionarPacienteFila(Paciente paciente, List<CondicaoAtual> condicoesAtuais) {
         if (paciente.getId() == 0)
             paciente.setId(++contadorId);
 
         paciente.setChegada(LocalDateTime.now());
-        paciente.setSintomasAgudos(sintomasAtuais);
+        paciente.setCondicoesAtuais(condicoesAtuais);
 
         // MATEMÁTICA DE TRIAGEM (Soma dos pesos dos 3 enums)
         int scoreCalculado = 0;
 
-        for (SintomaAgudo s : sintomasAtuais) {
+        for (CondicaoAtual s : condicoesAtuais) {
             scoreCalculado += s.getPeso();
         }
-        for (FatorRisco f : paciente.getFatoresRisco()) {
-            scoreCalculado += f.getPeso();
-        }
+
         for (HistoricoClinico h : paciente.getHistoricoClinico()) {
             scoreCalculado += h.getPeso();
         }
@@ -77,14 +74,13 @@ public class PacienteService {
     }
 
     public static void atualizarPaciente(Paciente paciente, String cpf, String nome, char sexo, LocalDate dataNascimento,
-                                         List<FatorRisco> fatoresRisco, List<HistoricoClinico> historicoClinico) {
+                                         List<HistoricoClinico> historicoClinico) {
         boolean cpfMudou = !paciente.getCpf().equals(cpf);
 
         paciente.setCpf(cpf);
         paciente.setNome(nome);
         paciente.setSexo(sexo);
         paciente.setDataNascimento(dataNascimento);
-        paciente.setFatoresRisco(fatoresRisco);
         paciente.setHistoricoClinico(historicoClinico);
 
         if (paciente.temCadastro()) {

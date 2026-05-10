@@ -13,27 +13,24 @@ public class Paciente {
     private int idade;
     private boolean temCadastro;
     private LocalDate dataNascimento;
-
-    private List<FatorRisco> fatoresRisco = new ArrayList<>(); //Nenhum paciente jamais nascerá em um estado inválido.
-    private List<HistoricoClinico> historicoClinico = new ArrayList<>(); //Nenhum paciente jamais nascerá em um estado inválido.
+    private List<HistoricoClinico> historicoClinico = new ArrayList<>();
 
     // Dados da visita atual
     private int id;
     private int scorePrioridade;
     private LocalDateTime chegada;
-    private List<SintomaAgudo> sintomasAgudos = new ArrayList<>(); //Nenhum paciente jamais nascerá em um estado inválido.
+    private List<CondicaoAtual> condicoesAtuais = new ArrayList<>();
 
     /**
      * Construtor para Paciente com Cadastro Completo
      */
     public Paciente(String cpf, String nome, char sexo, LocalDate dataNascimento,
-                    List<FatorRisco> fatoresRisco, List<HistoricoClinico> historicoClinico) {
+                    List<HistoricoClinico> historicoClinico) {
         this.cpf = cpf;
         this.nome = nome;
         this.sexo = sexo;
         this.dataNascimento = dataNascimento;
 
-        if (fatoresRisco != null) this.fatoresRisco = fatoresRisco;
         if (historicoClinico != null) this.historicoClinico = historicoClinico;
 
         this.temCadastro = true;
@@ -117,12 +114,9 @@ public class Paciente {
         this.dataNascimento = dataNascimento;
     }
 
-    public List<FatorRisco> getFatoresRisco() { return fatoresRisco; }
-    public void setFatoresRisco(List<FatorRisco> fatoresRisco) { this.fatoresRisco = fatoresRisco; }
-
     public List<HistoricoClinico> getHistoricoClinico() { return historicoClinico; }
     public void setHistoricoClinico(List<HistoricoClinico> historicoClinico) { this.historicoClinico = historicoClinico; }
 
-    public List<SintomaAgudo> getSintomasAgudos() { return sintomasAgudos; }
-    public void setSintomasAgudos(List<SintomaAgudo> sintomasAgudos) { this.sintomasAgudos = sintomasAgudos; }
+    public List<CondicaoAtual> getCondicoesAtuais() { return condicoesAtuais; }
+    public void setCondicoesAtuais(List<CondicaoAtual> condicoesAtuais) { this.condicoesAtuais = condicoesAtuais; }
 }
