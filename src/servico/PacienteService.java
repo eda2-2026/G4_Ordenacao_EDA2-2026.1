@@ -5,6 +5,8 @@ import entidade.HistoricoClinico;
 import entidade.Paciente;
 import entidade.SintomaAgudo;
 import estrutura.MaxHeap;
+import estrutura.BuscaBinaria;
+import estrutura.InsertionSort;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -27,13 +29,13 @@ public class PacienteService {
     public static void cadastrarPaciente(String cpf, String nome, char sexo, LocalDate dataNascimento,
                                          List<FatorRisco> fatoresRisco, List<HistoricoClinico> historicoClinico) {
         Paciente paciente = new Paciente(cpf, nome, sexo, dataNascimento, fatoresRisco, historicoClinico);
-        inserirOrdenado(paciente);
+        InsertionSort.inserirOrdenado(pacientesCadastrados, paciente);
         PersistenciaService.salvar(pacientesCadastrados);
     }
 
     public static void cadastrarPaciente(Paciente paciente) {
         paciente.setTemCadastro(true);
-        inserirOrdenado(paciente);
+        InsertionSort.inserirOrdenado(pacientesCadastrados, paciente);
         PersistenciaService.salvar(pacientesCadastrados);
     }
 
@@ -87,7 +89,7 @@ public class PacienteService {
 
         if (paciente.temCadastro()) {
             if (cpfMudou)
-                ordenar();
+                InsertionSort.ordenar(pacientesCadastrados);
             PersistenciaService.salvar(pacientesCadastrados);
             return;
         }
@@ -98,60 +100,11 @@ public class PacienteService {
 
     public static void recuperarPacientesCadastrados() {
         pacientesCadastrados = PersistenciaService.carregar();
-        ordenar();
-    }
-
-    private static void inserirOrdenado(Paciente paciente) {
-        // Insertion sort incremental
-        pacientesCadastrados.add(paciente);
-        int i = pacientesCadastrados.size() - 1;
-
-        while (i > 0) {
-            Paciente atual = pacientesCadastrados.get(i);
-            Paciente anterior = pacientesCadastrados.get(i - 1);
-
-            if (atual.getCpf().compareTo(anterior.getCpf()) < 0) {
-                pacientesCadastrados.set(i, anterior);
-                pacientesCadastrados.set(i - 1, atual);
-                i--;
-
-            } else break;
-        }
-    }
-
-    private static void ordenar() {
-        // Insertion sort
-        int n = pacientesCadastrados.size();
-        for (int i = 1; i < n; i++) {
-            Paciente atual = pacientesCadastrados.get(i);
-            int j = i - 1;
-            while (j >= 0 && pacientesCadastrados.get(j).getCpf().compareTo(atual.getCpf()) > 0) {
-                pacientesCadastrados.set(j + 1, pacientesCadastrados.get(j));
-                j--;
-            }
-            pacientesCadastrados.set(j + 1, atual);
-        }
+        InsertionSort.ordenar(pacientesCadastrados);
     }
 
     public static Paciente buscarCliente(String cpf) {
-        // Busca binária
-        int inicio = 0;
-        int fim = pacientesCadastrados.size() - 1;
-
-        while (inicio <= fim) {
-            int meio = (inicio + fim) / 2;
-            String cpfMeio = pacientesCadastrados.get(meio).getCpf();
-            int comparacao = cpfMeio.compareTo(cpf);
-
-            if (comparacao == 0)
-                return pacientesCadastrados.get(meio);
-            else if (comparacao < 0)
-                inicio = meio + 1;
-            else
-                fim = meio - 1;
-        }
-
-        return null;
+        return BuscaBinaria.porCpf(pacientesCadastrados, cpf);
     }
 
     public static List<Paciente> listarPacientesAtendidos() {
