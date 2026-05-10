@@ -27,7 +27,6 @@ public class PersistenciaService {
                         p.getNome() + SEPARADOR +
                         p.getSexo() + SEPARADOR +
                         p.getDataNascimento() + SEPARADOR +
-                        listaParaString(p.getFatoresRisco()) + SEPARADOR +
                         listaParaString(p.getHistoricoClinico());
 
                 writer.write(linha);
