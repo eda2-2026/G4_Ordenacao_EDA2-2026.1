@@ -3,36 +3,46 @@ import util.DataUtil;
 
 import java.time.LocalDateTime;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Paciente {
     // Dados permanentes
-    private String nome,
-            cpf;
+    private String nome, cpf;
     private char sexo;
     private int idade;
     private boolean temCadastro;
     private LocalDate dataNascimento;
-    private List<Condicao> historicoCondicoes;
+
+    private List<FatorRisco> fatoresRisco = new ArrayList<>(); //Nenhum paciente jamais nascerá em um estado inválido.
+    private List<HistoricoClinico> historicoClinico = new ArrayList<>(); //Nenhum paciente jamais nascerá em um estado inválido.
 
     // Dados da visita atual
     private int id;
     private int scorePrioridade;
     private LocalDateTime chegada;
-    private List<Condicao> condicoesAtuais;
+    private List<SintomaAgudo> sintomasAgudos = new ArrayList<>(); //Nenhum paciente jamais nascerá em um estado inválido.
 
-    public Paciente(String cpf, String nome, char sexo, LocalDate dataNascimento, List<Condicao> historicoCondicoes) {
-        // Paciente com cadastro
+    /**
+     * Construtor para Paciente com Cadastro Completo
+     */
+    public Paciente(String cpf, String nome, char sexo, LocalDate dataNascimento,
+                    List<FatorRisco> fatoresRisco, List<HistoricoClinico> historicoClinico) {
         this.cpf = cpf;
         this.nome = nome;
         this.sexo = sexo;
         this.dataNascimento = dataNascimento;
-        this.historicoCondicoes = historicoCondicoes;
+
+        if (fatoresRisco != null) this.fatoresRisco = fatoresRisco;
+        if (historicoClinico != null) this.historicoClinico = historicoClinico;
+
         this.temCadastro = true;
     }
 
+    /**
+     * Construtor para Paciente Temporário (Chegou na emergência sem docs)
+     */
     public Paciente(int id, String nome, int idade, char sexo) {
-        // Paciente temporário
         this.id = id;
         this.nome = nome;
         this.sexo = sexo;
@@ -40,10 +50,11 @@ public class Paciente {
         this.temCadastro = false;
     }
 
+    // GETTERS E SETTERS
+
     public String getCpf() {
         return cpf;
     }
-
     public void setCpf(String cpf) {
         this.cpf = cpf;
     }
@@ -51,7 +62,6 @@ public class Paciente {
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         this.id = id;
     }
@@ -59,7 +69,6 @@ public class Paciente {
     public int getScorePrioridade() {
         return scorePrioridade;
     }
-
     public void setScorePrioridade(int scorePrioridade) {
         this.scorePrioridade = scorePrioridade;
     }
@@ -67,23 +76,13 @@ public class Paciente {
     public LocalDateTime getChegada() {
         return chegada;
     }
-
     public void setChegada(LocalDateTime chegada) {
         this.chegada = chegada;
-    }
-
-    public List<Condicao> getCondicoesAtuais() {
-        return condicoesAtuais;
-    }
-
-    public void setCondicoesAtuais(List<Condicao> condicoesAtuais) {
-        this.condicoesAtuais = condicoesAtuais;
     }
 
     public String getNome() {
         return nome;
     }
-
     public void setNome(String nome) {
         this.nome = nome;
     }
@@ -91,7 +90,6 @@ public class Paciente {
     public char getSexo() {
         return sexo;
     }
-
     public void setSexo(char sexo) {
         this.sexo = sexo;
     }
@@ -101,7 +99,6 @@ public class Paciente {
             return DataUtil.calcularIdade(this.dataNascimento);
         return idade;
     }
-
     public void setIdade(int idade) {
         this.idade = idade;
     }
@@ -109,7 +106,6 @@ public class Paciente {
     public boolean temCadastro() {
         return temCadastro;
     }
-
     public void setTemCadastro(boolean temCadastro) {
         this.temCadastro = temCadastro;
     }
@@ -117,16 +113,16 @@ public class Paciente {
     public LocalDate getDataNascimento() {
         return dataNascimento;
     }
-
     public void setDataNascimento(LocalDate dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 
-    public List<Condicao> getHistoricoCondicoes() {
-        return historicoCondicoes;
-    }
+    public List<FatorRisco> getFatoresRisco() { return fatoresRisco; }
+    public void setFatoresRisco(List<FatorRisco> fatoresRisco) { this.fatoresRisco = fatoresRisco; }
 
-    public void setHistoricoCondicoes(List<Condicao> historicoCondicoes) {
-        this.historicoCondicoes = historicoCondicoes;
-    }
+    public List<HistoricoClinico> getHistoricoClinico() { return historicoClinico; }
+    public void setHistoricoClinico(List<HistoricoClinico> historicoClinico) { this.historicoClinico = historicoClinico; }
+
+    public List<SintomaAgudo> getSintomasAgudos() { return sintomasAgudos; }
+    public void setSintomasAgudos(List<SintomaAgudo> sintomasAgudos) { this.sintomasAgudos = sintomasAgudos; }
 }

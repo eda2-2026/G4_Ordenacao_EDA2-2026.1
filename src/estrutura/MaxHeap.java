@@ -63,7 +63,7 @@ public class MaxHeap {
 
     public static Paciente removerPacienteFilaPrioridade(List<Paciente> lista){
         if(lista.isEmpty()){
-            throw new RuntimeException("A fila está vazia!");
+            return null;
         }
         int ultimo = lista.size() - 1;
         Paciente removido = lista.get(0);

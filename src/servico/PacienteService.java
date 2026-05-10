@@ -1,7 +1,9 @@
 package servico;
 
-import entidade.Condicao;
+import entidade.FatorRisco;
+import entidade.HistoricoClinico;
 import entidade.Paciente;
+import entidade.SintomaAgudo;
 import estrutura.MaxHeap;
 
 import java.time.LocalDate;
@@ -22,8 +24,9 @@ public class PacienteService {
         return new Paciente(id, nome, idade, sexo);
     }
 
-    public static void cadastrarPaciente(String cpf, String nome, char sexo, LocalDate dataNascimento, List<Condicao> historicoCondicoes) {
-        Paciente paciente = new Paciente(cpf, nome, sexo, dataNascimento, historicoCondicoes);
+    public static void cadastrarPaciente(String cpf, String nome, char sexo, LocalDate dataNascimento,
+                                         List<FatorRisco> fatoresRisco, List<HistoricoClinico> historicoClinico) {
+        Paciente paciente = new Paciente(cpf, nome, sexo, dataNascimento, fatoresRisco, historicoClinico);
         inserirOrdenado(paciente);
         PersistenciaService.salvar(pacientesCadastrados);
     }
@@ -34,34 +37,53 @@ public class PacienteService {
         PersistenciaService.salvar(pacientesCadastrados);
     }
 
-    public static void adicionarPacienteFila(Paciente paciente, List<Condicao> condicoesAtuais, int scorePrioridade) {
+    public static void adicionarPacienteFila(Paciente paciente, List<SintomaAgudo> sintomasAtuais) {
         if (paciente.getId() == 0)
             paciente.setId(++contadorId);
+
         paciente.setChegada(LocalDateTime.now());
-        paciente.setCondicoesAtuais(condicoesAtuais);
-        paciente.setScorePrioridade(scorePrioridade);
+        paciente.setSintomasAgudos(sintomasAtuais);
+
+        // MATEMÁTICA DE TRIAGEM (Soma dos pesos dos 3 enums)
+        int scoreCalculado = 0;
+
+        for (SintomaAgudo s : sintomasAtuais) {
+            scoreCalculado += s.getPeso();
+        }
+        for (FatorRisco f : paciente.getFatoresRisco()) {
+            scoreCalculado += f.getPeso();
+        }
+        for (HistoricoClinico h : paciente.getHistoricoClinico()) {
+            scoreCalculado += h.getPeso();
+        }
+
+        paciente.setScorePrioridade(scoreCalculado);
         MaxHeap.inserirPacienteFilaPrioridade(paciente, pacientesFila);
     }
 
     public static Paciente atenderProximoFila() {
+
         Paciente paciente = MaxHeap.removerPacienteFilaPrioridade(pacientesFila);
-        if (paciente != null)
-            pacientesAtendidos.add(paciente);
+        if (paciente == null) return null;
+        pacientesAtendidos.add(paciente);
         return paciente;
     }
 
     public static Paciente lerProximoFila() {
+        if (pacientesFila.isEmpty()) return null;
         return pacientesFila.getFirst();
     }
 
-    public static void atualizarPaciente(Paciente paciente, String cpf, String nome, char sexo, LocalDate dataNascimento, List<Condicao> historicoCondicoes) {
+    public static void atualizarPaciente(Paciente paciente, String cpf, String nome, char sexo, LocalDate dataNascimento,
+                                         List<FatorRisco> fatoresRisco, List<HistoricoClinico> historicoClinico) {
         boolean cpfMudou = !paciente.getCpf().equals(cpf);
 
         paciente.setCpf(cpf);
         paciente.setNome(nome);
         paciente.setSexo(sexo);
         paciente.setDataNascimento(dataNascimento);
-        paciente.setHistoricoCondicoes(historicoCondicoes);
+        paciente.setFatoresRisco(fatoresRisco);
+        paciente.setHistoricoClinico(historicoClinico);
 
         if (paciente.temCadastro()) {
             if (cpfMudou)
@@ -137,8 +159,7 @@ public class PacienteService {
     }
 
     public static List<Paciente> listarPacientesFila() {
-        // Não está ordenada. Apenas o primeiro elemento está na posição correta.
-        return new ArrayList<>(pacientesFila);
+        return MaxHeap.ListarPacientes(pacientesFila);
     }
 
     public static List<Paciente> listarPacientesCadastrados() {

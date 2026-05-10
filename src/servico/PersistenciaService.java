@@ -1,6 +1,7 @@
 package servico;
 
-import entidade.Condicao;
+import entidade.FatorRisco;
+import entidade.HistoricoClinico;
 import entidade.Paciente;
 
 import java.io.*;
@@ -12,14 +13,14 @@ public class PersistenciaService {
 
     private static final String ARQUIVO = "pacientes.csv";
     private static final String SEPARADOR = ",";
-    private static final String SEPARADOR_CONDICOES = ";";
+    private static final String SEPARADOR_LISTA = ";";
 
     private PersistenciaService() {}
 
     protected static void salvar(List<Paciente> pacientes) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(ARQUIVO))) {
             // cabeçalho
-            writer.write("cpf,nome,sexo,dataNascimento,historicoCondicoes");
+            writer.write("cpf,nome,sexo,dataNascimento,fatoresRisco,historicoClinico");
             writer.newLine();
 
             for (Paciente p : pacientes) {
@@ -27,7 +28,8 @@ public class PersistenciaService {
                         p.getNome() + SEPARADOR +
                         p.getSexo() + SEPARADOR +
                         p.getDataNascimento() + SEPARADOR +
-                        condicoesParaString(p.getHistoricoCondicoes());
+                        listaParaString(p.getFatoresRisco()) + SEPARADOR +
+                        listaParaString(p.getHistoricoClinico());
 
                 writer.write(linha);
                 writer.newLine();
@@ -53,6 +55,7 @@ public class PersistenciaService {
 
         } catch (FileNotFoundException e) {
             // primeira execução
+            System.out.println("Arquivo de dados não encontrado. Uma nova base será criada.");
         } catch (IOException e) {
             System.err.println("Erro ao carregar: " + e.getMessage());
         }
@@ -60,11 +63,11 @@ public class PersistenciaService {
         return pacientes;
     }
 
-    private static String condicoesParaString(List<Condicao> condicoes) {
-        if (condicoes == null || condicoes.isEmpty()) return "";
+    private static String listaParaString(List<? extends Enum<?>> lista) {
+        if (lista == null || lista.isEmpty()) return "";
         StringBuilder sb = new StringBuilder();
-        for (Condicao c : condicoes) {
-            sb.append(c.name()).append(SEPARADOR_CONDICOES);
+        for (Enum<?> e : lista) {
+            sb.append(e.name()).append(SEPARADOR_LISTA);
         }
         return sb.substring(0, sb.length() - 1); // remove último ';'
     }
@@ -72,14 +75,17 @@ public class PersistenciaService {
     private static Paciente stringParaPaciente(String linha) {
         try {
             String[] campos          = linha.split(SEPARADOR);
+            if (campos.length < 4) return null;
+
             String cpf               = campos[0];
             String nome              = campos[1];
             char sexo                = campos[2].charAt(0);
             LocalDate dataNasc       = LocalDate.parse(campos[3]);
-            List<Condicao> condicoes = stringParaCondicoes(campos.length > 5 ? campos[4] : "");
 
-            int idade = dataNasc.getYear() - dataNasc.getMonthValue();
-            return new Paciente(cpf, nome, sexo, dataNasc, condicoes);
+            List<FatorRisco> fatores = stringParaFatores(campos.length > 4 ? campos[4] : "");
+            List<HistoricoClinico> historico = stringParaHistorico(campos.length > 5 ? campos[5] : "");
+
+            return new Paciente(cpf, nome, sexo, dataNasc, fatores, historico);
 
         } catch (Exception e) {
             System.err.println("Linha inválida ignorada: " + linha);
@@ -87,17 +93,31 @@ public class PersistenciaService {
         }
     }
 
-    private static List<Condicao> stringParaCondicoes(String texto) {
-        List<Condicao> condicoes = new ArrayList<>();
-        if (texto.isEmpty()) return condicoes;
+    private static List<FatorRisco> stringParaFatores(String texto) {
+        List<FatorRisco> lista = new ArrayList<>();
+        if (texto.isEmpty()) return lista;
 
-        for (String nome : texto.split(SEPARADOR_CONDICOES)) {
+        for (String nome : texto.split(SEPARADOR_LISTA)) {
             try {
-                condicoes.add(Condicao.valueOf(nome));
+                lista.add(FatorRisco.valueOf(nome));
             } catch (IllegalArgumentException e) {
                 System.err.println("Condição inválida ignorada: " + nome);
             }
         }
-        return condicoes;
+        return lista;
+    }
+
+    private static List<HistoricoClinico> stringParaHistorico(String texto) {
+        List<HistoricoClinico> lista = new ArrayList<>();
+        if (texto.isEmpty()) return lista;
+
+        for (String nome : texto.split(SEPARADOR_LISTA)) {
+            try {
+                lista.add(HistoricoClinico.valueOf(nome));
+            } catch (IllegalArgumentException e) {
+                System.err.println("Condição inválida ignorada: " + nome);
+            }
+        }
+        return lista;
     }
 }
