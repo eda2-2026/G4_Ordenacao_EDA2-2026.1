@@ -56,6 +56,8 @@ public class PacienteService {
             scoreCalculado += h.getPeso();
         }
 
+        scoreCalculado += calcularPesoPorIdade(paciente.getIdade());
+
         paciente.setScorePrioridade(scoreCalculado);
         MaxHeap.inserirPacienteFilaPrioridade(paciente, pacientesFila);
     }
@@ -115,4 +117,12 @@ public class PacienteService {
         return new ArrayList<>(pacientesCadastrados);
     }
 
+    private static int calcularPesoPorIdade(int idade) {
+        if (idade == 0)   return 8; // recém-nascido
+        if (idade <= 2)   return 5; // bebê
+        if (idade <= 12)  return 2; // criança
+        if (idade >= 80)  return 5; // idoso 80+
+        if (idade >= 60)  return 3; // idoso
+        return 0;                   // adulto
+    }
 }
