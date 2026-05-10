@@ -1,5 +1,7 @@
 package estrutura;
 import entidade.Paciente;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class MaxHeap {
@@ -64,11 +66,25 @@ public class MaxHeap {
             throw new RuntimeException("A fila está vazia!");
         }
         int ultimo = lista.size() - 1;
-        Paciente removido = lista.getFirst();
+        Paciente removido = lista.get(0);
         swap(0, ultimo, lista);
         lista.remove(ultimo);
         shiftDown(0, lista);
         return removido;
     }
 
+    public static List<Paciente> ListarPacientes(List<Paciente> Pacientes){
+        List<Paciente> filaPacientes = new ArrayList<>(Pacientes); // Cópia do Vetor - Os objetos são os mesmos!
+        // -> O maxheap será executado aqui e o resultado depositado no vetor "ordenado", sendo o resultado final, a fila
+
+        List<Paciente> ordenados = new ArrayList<>(); // Vetor de retorno
+
+        while(!filaPacientes.isEmpty()){
+            ordenados.add(removerPacienteFilaPrioridade(filaPacientes));
+        }
+
+        return ordenados;
+    }
+
 }
+
