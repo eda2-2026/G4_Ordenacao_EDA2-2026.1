@@ -77,7 +77,7 @@ public class PacienteService {
 
     public static void atualizarPaciente(Paciente paciente, String cpf, String nome, char sexo, LocalDate dataNascimento,
                                          List<HistoricoClinico> historicoClinico) {
-        boolean cpfMudou = !paciente.getCpf().equals(cpf);
+        boolean cpfMudou = paciente.getCpf() == null || !paciente.getCpf().equals(cpf);
 
         paciente.setCpf(cpf);
         paciente.setNome(nome);
@@ -115,6 +115,18 @@ public class PacienteService {
 
     public static List<Paciente> listarPacientesCadastrados() {
         return new ArrayList<>(pacientesCadastrados);
+    }
+
+    public static boolean cpfNaFila(String cpf) {
+        if (cpf == null || cpf.isEmpty()) return false;
+        for (Paciente p : pacientesFila) {
+            if (cpf.equals(p.getCpf())) return true;
+        }
+        return false;
+    }
+
+    public static boolean pacienteNaFila(Paciente paciente) {
+        return pacientesFila.contains(paciente);
     }
 
     private static int calcularPesoPorIdade(int idade) {

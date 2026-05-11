@@ -91,7 +91,29 @@ public enum CondicaoAtual {
 
     SANGRAMENTO_LEVE("Ferimento superficial / sangramento leve", 3),
 
-    DOR_LEVE("Dor nível 1–3", 2);
+    DOR_LEVE("Dor nível 1–3", 2),
+
+    // ====================================================================
+    // SINTOMAS GERAIS (PESOS 1 a 5)
+    // ====================================================================
+
+    DESIDRATACAO("Desidratação", 5),
+
+    VOMITOS("Vômitos persistentes", 4),
+
+    FALTA_DE_AR_LEVE("Falta de ar leve", 4),
+
+    DIARREIA("Diarreia intensa", 3),
+
+    TONTURA("Tontura / vertigem", 3),
+
+    TOSSE_PERSISTENTE("Tosse persistente", 2),
+
+    MAL_ESTAR_GERAL("Mal-estar geral", 1),
+
+    DOR_DE_GARGANTA("Dor de garganta", 1),
+
+    CONGESTAO_NASAL("Congestão nasal / coriza", 1);
 
     private final String descricao;
     private final int peso;
