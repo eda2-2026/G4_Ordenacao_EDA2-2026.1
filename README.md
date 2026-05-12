@@ -43,26 +43,42 @@ Conforme a evolução do projeto e a arquitetura adotada, o desenvolvimento foi 
 
 ## 💻 Como Executar
 
-A aplicação foi desenhada para rodar de forma leve e direta, gerenciando seu próprio banco de dados em tempo de execução.
+A aplicação foi desenhada para rodar de forma leve e direta. Como o arquivo de banco de dados (`pacientes.csv`) foi omitido do repositório por questões de versionamento, você precisará gerá-lo localmente antes da primeira execução.
 
 **Pré-requisitos:** JDK 25 ou superior.
 
 1. Clone o repositório e abra o projeto na sua IDE de preferência (IntelliJ IDEA, Eclipse, VS Code).
-2. Certifique-se de que a pasta `src/` está marcada como o diretório de fontes (Sources Root).
-3. Verifique se o arquivo `pacientes.csv` está localizado na **raiz do projeto** (junto com a pasta `src/`). Se o arquivo não existir, o sistema criará uma base vazia automaticamente ao rodar.
-4. Navegue até o arquivo `src/Main.java`.
-5. Execute a classe `Main`. O sistema carregará a massa de dados para a memória ordenando os CPFs automaticamente, e inicializará a Interface Gráfica de Atendimento.
+2. Certifique-se de que a pasta `src/` está marcada como o diretório de fontes (*Sources Root*).
+3. **Passo 1 - Gerar a Massa de Dados:**
+   * Navegue até o arquivo `src/util/GeradorPacientes.java`.
+   * Execute a classe `GeradorPacientes`.
+   * O console informará a conclusão, e o arquivo `pacientes.csv` será criado na **raiz do projeto**.
+4. **Passo 2 - Iniciar o Sistema Hospitalar:**
+   * Navegue até o arquivo `src/Main.java`.
+   * Execute a classe `Main`. O sistema carregará a massa de dados para a memória ordenando os CPFs automaticamente, e inicializará a Interface Gráfica de Atendimento.
 
-## 🎥 Demonstração Visual - EM BREVE
+## 🎥 Demonstração Visual
 
-**Assista ao nosso vídeo explicativo no YouTube:** [![Vídeo de Demonstração](https://img.youtube.com/vi/---/maxresdefault.jpg)](https://youtu.be/---)
+**Assista ao nosso vídeo explicativo no YouTube:** [![Vídeo de Demonstração](https://img.youtube.com/vi/CuY6l9td3oE/maxresdefault.jpg)](https://www.youtube.com/watch?v=CuY6l9td3oE)
 
-### Capturas de Tela do Sistema - EM BREVE
-....
+### Capturas de Tela do Sistema
+
+<details>
+<summary><b>🖼️ Clique para expandir as imagens do sistema</b></summary>
+<br>
+
+<p align="center">
+  <img src="docs/assets/screenshots/Screenshot_1.png" width="500"/><br><br>
+  <img src="docs/assets/screenshots/Screenshot_2.png" width="500"/><br><br>
+  <img src="docs/assets/screenshots/Screenshot_3.png" width="500"/><br><br>
+  <img src="docs/assets/screenshots/Screenshot_4.png" width="500"/><br><br>
+  <img src="docs/assets/screenshots/Screenshot_5.png" width="500"/>
+</p>
+</details>
 
 ## Equipe de Desenvolvimento
 
 | <img src="docs/assets/fotos/Davi-UnB.png" width="120px;" alt="Davi Freitas"/><br />**Davi Freitas** | <img src="docs/assets/fotos/Mateus0xC.png" width="120px;" alt="Mateus Barreto"/><br />**Mateus Barreto** |
 | :---: | :---: |
 | Matrícula: **241011018** | Matrícula: **241011466** |
-| <img src="https://github.com/Davi-UnB.png" width="16px;"/> [`@Davi-UnB`](https://github.com/Davi-UnB) | <img src="https://github.com/Mateus0xC.png" width="16px;"/> [`@Mateus0xC`](https://github.com/Mateus0xC) <img src="https://github.com/gecko1205.png" width="16px;"/> [`@gecko1205`](https://github.com/gecko1205) |
+| <img src="https://github.com/Davi-UnB.png" width="16px;"/> [`@Davi-UnB`](https://github.com/Davi-UnB) | <img src="https://github.com/Mateus0xC.png" width="16px;"/> [`@Mateus0xC`](https://github.com/Mateus0xC)
