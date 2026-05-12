@@ -19,7 +19,7 @@ public class PersistenciaService {
     protected static void salvar(List<Paciente> pacientes) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(ARQUIVO))) {
             // cabeçalho
-            writer.write("cpf,nome,sexo,dataNascimento,historicoClinico");
+            writer.write("cpf,nome,sexo,dataNascimento,fatoresRisco,historicoClinico");
             writer.newLine();
 
             for (Paciente p : pacientes) {
@@ -80,7 +80,7 @@ public class PersistenciaService {
             char sexo                = campos[2].charAt(0);
             LocalDate dataNasc       = LocalDate.parse(campos[3]);
 
-            List<HistoricoClinico> historico = stringParaHistorico(campos.length > 4 ? campos[4] : "");
+            List<HistoricoClinico> historico = stringParaHistorico(campos.length > 5 ? campos[4] : "");
 
             return new Paciente(cpf, nome, sexo, dataNasc, historico);
 
