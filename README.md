@@ -27,18 +27,18 @@ Conforme a evolução do projeto e a arquitetura adotada, o desenvolvimento foi 
 ### Davi
 * Estruturação e algoritmo do motor de Fila de Prioridade (**MaxHeap**).
 * Taxonomia clínica em domínios isolados (`HistoricoClinico` e `CondicaoAtual`).
-* Geração da massa de dados simulada para alimentar o sistema (CSV).
+* Gerador Probabilístico de Pacientes
 
 ### Mateus
 * Idealização do sistema de pesos e gravidade clínica (Inspirado no Protocolo de Manchester).
 * Implementação dos algoritmos utilitários do pacote de estruturas (**Busca Binária** e **Insertion Sort**).
 * Implementação do motor de persistência de dados (`PersistenciaService`).
 * Construção de toda a interface gráfica modularizada em Java Swing.
+* Sistema de cadastro dos pacientes
 
 ### Responsabilidade Compartilhada
 * Refatoração contínua e aplicação de princípios de Clean Code (como SRP - Single Responsibility Principle).
 * Integração dos serviços do backend com a interface gráfica.
-* Gerador Probabilístico de Pacientes
 
 
 ## 💻 Como Executar
