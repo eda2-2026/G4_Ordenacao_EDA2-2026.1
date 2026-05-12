@@ -4,7 +4,7 @@ Requer: pip install faker
 
 Uso:
     python gerar_pacientes.py              # 100 pacientes → pacientes.csv
-    python gerar_pacientes.py -n 5000 -o dados/triagem.csv
+    python gerar_pacientes.py -n 5000 -o pacientes.csv
 """
 
 import csv
@@ -32,11 +32,20 @@ def gerar_historico() -> str:
     qtd = random.choices(range(1, 5), weights=pesos)[0]
     return ";".join(random.sample(HISTORICO_CLINICO, qtd))
 
+PREFIXOS = {"Dr.", "Dra.", "Sr.", "Sra.", "Srta."}
+
+def _limpar_nome(nome: str) -> str:
+    partes = nome.split()
+    if partes and partes[0] in PREFIXOS:
+        partes = partes[1:]
+    return " ".join(partes)
+
 def gerar_paciente() -> dict:
     sexo = random.choice(["M", "F"])
+    nome_raw = fake.name_male() if sexo == "M" else fake.name_female()
     return {
         "cpf":              fake.cpf().replace(".", "").replace("-", ""),
-        "nome":             fake.name_male() if sexo == "M" else fake.name_female(),
+        "nome":             _limpar_nome(nome_raw),
         "sexo":             sexo,
         "dataNascimento":   fake.date_of_birth(minimum_age=0, maximum_age=100).isoformat(),
         "historicoClinico": gerar_historico(),
