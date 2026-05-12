@@ -227,13 +227,15 @@ public class TelaAtendimento {
             return;
         }
 
-        int confirmar = JOptionPane.showConfirmDialog(MenuUtil.getFrame(),
+        String[] opcoesAtender = {"Sim", "Não"};
+        int confirmar = JOptionPane.showOptionDialog(MenuUtil.getFrame(),
                 "Próximo paciente:\n\n" + MenuUtil.formatarPacienteDetalhado(proximo) +
                         "\n\nDeseja atender este paciente agora?",
                 "Confirmar Atendimento",
-                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
+                null, opcoesAtender, opcoesAtender[0]);
 
-        if (confirmar == JOptionPane.YES_OPTION) {
+        if (confirmar == 0) {
             Paciente atendido = PacienteService.atenderProximoFila();
             assert atendido != null;
             JOptionPane.showMessageDialog(MenuUtil.getFrame(),

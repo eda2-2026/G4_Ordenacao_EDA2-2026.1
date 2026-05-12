@@ -211,9 +211,11 @@ public class MenuUtil {
         painel.add(campoData, gbc);
 
         while (true) {
-            int result = JOptionPane.showConfirmDialog(frame, painel, titulo,
-                    JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-            if (result != JOptionPane.OK_OPTION) return null;
+            String[] opcoesPainel = {"Confirmar", "Cancelar"};
+            int result = JOptionPane.showOptionDialog(frame, painel, titulo,
+                    JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+                    null, opcoesPainel, opcoesPainel[0]);
+            if (result != 0) return null;
 
             String cpf = campoCpf.getText().replaceAll("[^0-9]", "");
             String nome = campoNome.getText().trim();
@@ -334,12 +336,14 @@ public class MenuUtil {
         scrollPane.setPreferredSize(new Dimension(480, 420));
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 
-        int resultado = JOptionPane.showConfirmDialog(
+        String[] opcoesCheckbox = {"OK", "Cancelar"};
+        int resultado = JOptionPane.showOptionDialog(
                 frame, scrollPane, titulo,
-                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE
+                JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+                null, opcoesCheckbox, opcoesCheckbox[0]
         );
 
-        if (resultado != JOptionPane.OK_OPTION) return null;
+        if (resultado != 0) return null;
 
         List<E> selecionados = new ArrayList<>();
         for (int i = 0; i < checkboxes.size(); i++) {
