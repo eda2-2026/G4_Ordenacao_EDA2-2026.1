@@ -6,8 +6,8 @@ O objetivo deste projeto é implementar um sistema de triagem de pacientes para 
 ## Características dos Dados e Arquitetura
 
 * **Score de Prioridade Dinâmico:** A ordem de atendimento não é por ordem de chegada, mas sim pelo risco de morte. O Score é calculado matematicamente somando a gravidade dos domínios clínicos: Sintomas Agudos (visita atual) e Histórico Clínico (banco de dados), aliados a um cálculo de risco por faixa etária. Pacientes mais graves sobem para a raiz da árvore (posição 0).
-* **Fila de Espera (MaxHeap):** Estrutura de dados com complexidade $O(\log N)$ para inserção (Shift-Up) e remoção (Shift-Down), garantindo altíssima performance mesmo com uma sala de espera lotada.
-* **Cadastro e Busca Rápida:** O banco de dados fixo do hospital (cadastro de pacientes) é ordenado pelo CPF utilizando **Insertion Sort**. Isso permite que o sistema identifique os dados do paciente instantaneamente na recepção utilizando **Busca Binária** com complexidade $O(\log N)$.
+* **Fila de Espera (MaxHeap):** Estrutura de dados com complexidade $O(\log (N))$ para inserção (Shift-Up) e remoção (Shift-Down), garantindo altíssima performance mesmo com uma sala de espera lotada.
+* **Cadastro e Busca Rápida:** O banco de dados fixo do hospital (cadastro de pacientes) é ordenado pelo CPF utilizando **Insertion Sort**. Isso permite que o sistema identifique os dados do paciente instantaneamente na recepção utilizando **Busca Binária** com complexidade $O(\log (N))$.
 * **Persistência em Arquivo:** Os dados fixos são salvos e carregados de um arquivo `pacientes.csv` utilizando um serviço próprio de manipulação de Strings e conversão de Enums.
 
 ## 🧬 Gerador Probabilístico de Pacientes (Massa de Dados)
@@ -18,7 +18,7 @@ Para simular um ambiente hospitalar realista e estressar o sistema com dados fid
 * **Realismo Epidemiológico:** O algoritmo não distribui doenças de forma puramente aleatória. Ele utiliza probabilidade ponderada por faixa etária (ex: pacientes com mais de 60 anos têm incidência muito maior de Hipertensão e Doenças Cardíacas, enquanto crianças recebem condições pediátricas específicas).
 * **Validação de Documentos:** Gera CPFs 100% válidos matematicamente (através do cálculo oficial dos Dígitos Verificadores em módulo 11).
 * **Nomes Brasileiros Reais:** Combina listas extensas de nomes e sobrenomes comuns no Brasil, evitando redundâncias irreais (como "Silva Silva").
-* **Otimização de Performance para o Insertion Sort:** Antes de exportar para o arquivo `pacientes.csv`, o gerador já ordena a lista de pacientes por CPF. Isso garante que, ao iniciar o sistema principal, a carga inicial na memória opere no seu melhor caso matemático ($O(N)$).
+* **Otimização de Performance para o Insertion Sort:** Antes de exportar para o arquivo `pacientes.csv`, o gerador já ordena a lista de pacientes por CPF. Isso garante que, ao iniciar o sistema principal, a carga inicial na memória opere no seu melhor caso matemático $O(N)$.
 
 ## Divisão de Responsabilidades
 
